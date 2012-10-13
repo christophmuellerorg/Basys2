@@ -1,0 +1,193 @@
+# -------------------------------------------------------------
+#   Copyright(C) 2003 by Xilinx, Inc. All rights reserved.   --
+#                                                            --
+#   This copyright notice must be retained as part           --
+#   of this text at all times.                               --
+# -------------------------------------------------------------
+
+ATTRIBUTE VENDOR = Digilent
+ATTRIBUTE SPEC_URL = www.digilentinc.com
+ATTRIBUTE CONTACT_INFO_URL=http://www.digilentinc.com
+ATTRIBUTE NAME = Basys 2-250 Board
+
+ATTRIBUTE REVISION = C
+
+ATTRIBUTE DESC = Digilent Basys 2-250 Board 
+
+ATTRIBUTE LONG_DESC = 'The Digilent Basys 2-250 board features an XC3S250E Spartan3E FPGA, 8-Bit VGA, PS/2 port, 8 Switches, 8 LEDs, 4 pushbuttons, 4-digit 7-segment display and 4 PMOD expansion connectors. Use 50MHZ or lower for the clock frequency'
+
+BEGIN IO_INTERFACE
+  ATTRIBUTE IOTYPE = XIL_CLOCK_V1
+   ATTRIBUTE INSTANCE =clk_50
+   PARAMETER CLK_FREQ =50000000, IO_IS=clk_freq, RANGE=(50000000)   # 50 Mhz
+   PORT FPGA.CLK = CONN_CLK, IO_IS=ext_clk
+END
+
+#BEGIN IO_INTERFACE
+  #ATTRIBUTE IOTYPE = XIL_CLOCK_V1
+   #ATTRIBUTE INSTANCE =clk_socket
+   #PARAMETER CLK_FREQ =50000000, IO_IS=clk_freq   # socket
+   #PORT FPGA.CLK = CONN_SOCKET_CLK , IO_IS=ext_clk
+#END
+
+BEGIN IO_INTERFACE
+  ATTRIBUTE IOTYPE = XIL_RESET_V1
+   ATTRIBUTE INSTANCE =rst_0
+   PARAMETER RST_POLARITY =1, IO_IS=polarity, VALUE_NOTE=Active High
+   # push button 0 is dedicated to system reset.
+   PORT FPGA.RESET = CONN_FPGA.RESET, IO_IS=ext_rst
+END
+
+BEGIN IO_INTERFACE
+  ATTRIBUTE IOTYPE = XIL_GPIO_V1
+   ATTRIBUTE INSTANCE = LEDs_8Bit
+   PARAMETER num_bits =8, IO_IS=num_bits
+   PARAMETER is_dual=0, IO_IS=is_dual 
+   PARAMETER bidir_data=0, IO_IS=is_bidir     # Non-bidir data pins
+   PARAMETER all_inputs =0, IO_IS=all_inputs   # All outputs
+
+   # Endianness inversion is done in the MHS file       
+   PORT LED0 = CONN_LED0, IO_IS = gpio_data_out[7], INITIALVAL = GND
+   PORT LED1 = CONN_LED1, IO_IS = gpio_data_out[6], INITIALVAL = GND
+   PORT LED2 = CONN_LED2, IO_IS = gpio_data_out[5], INITIALVAL = GND
+   PORT LED3 = CONN_LED3, IO_IS = gpio_data_out[4], INITIALVAL = GND
+   PORT LED4 = CONN_LED4, IO_IS = gpio_data_out[3], INITIALVAL = GND
+   PORT LED5 = CONN_LED5, IO_IS = gpio_data_out[2], INITIALVAL = GND
+   PORT LED6 = CONN_LED6, IO_IS = gpio_data_out[1], INITIALVAL = GND
+   PORT LED7 = CONN_LED7, IO_IS = gpio_data_out[0], INITIALVAL = GND
+END       
+
+ BEGIN IO_INTERFACE
+   ATTRIBUTE IOTYPE = XIL_GPIO_V1
+   ATTRIBUTE INSTANCE = LED_7SEGMENT
+   PARAMETER num_bits =12, IO_IS=num_bits
+   PARAMETER is_dual=0, IO_IS=is_dual 
+   PARAMETER bidir_data=0, IO_IS=is_bidir     # Non-bidir data pins
+   PARAMETER all_inputs =0, IO_IS=all_inputs   # All outputs
+
+  # Endianness inversion is done in the MHS file      
+  PORT SEG_CA = CONN_CA, IO_IS = gpio_data_out[11], INITIALVAL = VCC
+  PORT SEG_CB = CONN_CB, IO_IS = gpio_data_out[10], INITIALVAL = VCC
+  PORT SEG_CC = CONN_CC, IO_IS = gpio_data_out[9], INITIALVAL = VCC
+  PORT SEG_CD = CONN_CD, IO_IS = gpio_data_out[8], INITIALVAL = VCC
+  PORT SEG_CE = CONN_CE, IO_IS = gpio_data_out[7], INITIALVAL = VCC
+  PORT SEG_CF = CONN_CF, IO_IS = gpio_data_out[6], INITIALVAL = VCC
+  PORT SEG_CG = CONN_CG, IO_IS = gpio_data_out[5], INITIALVAL = VCC
+  PORT SEG_DP = CONN_DP, IO_IS = gpio_data_out[4], INITIALVAL = VCC
+  PORT AN0 = CONN_AN0, IO_IS = gpio_data_out[3], INITIALVAL = VCC
+  PORT AN1 = CONN_AN1, IO_IS = gpio_data_out[2], INITIALVAL = VCC
+  PORT AN2 = CONN_AN2, IO_IS = gpio_data_out[1], INITIALVAL = VCC
+  PORT AN3 = CONN_AN3, IO_IS = gpio_data_out[0], INITIALVAL = VCC
+ END       
+          
+BEGIN IO_INTERFACE
+   ATTRIBUTE IOTYPE = XIL_GPIO_V1
+   ATTRIBUTE INSTANCE = Push_Buttons_3Bit
+   PARAMETER num_bits =3, IO_IS=num_bits
+   PARAMETER is_dual=0, IO_IS=is_dual 
+   PARAMETER bidir_data=0, IO_IS=is_bidir     # Non-bidir data pins
+   PARAMETER all_inputs =1, IO_IS=all_inputs   # All inputs
+
+   # Endianness inversion is done in the MHS file 
+   PORT BTN1 = CONN_BTN1, IO_IS = gpio_data_in[2]
+   PORT BTN2 = CONN_BTN2, IO_IS = gpio_data_in[1]
+   PORT BTN3 = CONN_BTN3, IO_IS = gpio_data_in[0]
+END       
+          
+BEGIN IO_INTERFACE
+   ATTRIBUTE IOTYPE = XIL_GPIO_V1
+   ATTRIBUTE INSTANCE = Switches_8Bit
+   PARAMETER num_bits =8, IO_IS=num_bits
+   PARAMETER is_dual=0, IO_IS=is_dual 
+   PARAMETER bidir_data=0, IO_IS=is_bidir     # Non-bidir data pins
+   PARAMETER all_inputs=1, IO_IS=all_inputs   # All inputs
+
+   # Endianness inversion is done in the MHS file
+   PORT SW0 = CONN_SW0, IO_IS = gpio_data_in[7]
+   PORT SW1 = CONN_SW1, IO_IS = gpio_data_in[6]
+   PORT SW2 = CONN_SW2, IO_IS = gpio_data_in[5]
+   PORT SW3 = CONN_SW3, IO_IS = gpio_data_in[4]
+   PORT SW4 = CONN_SW4, IO_IS = gpio_data_in[3]
+   PORT SW5 = CONN_SW5, IO_IS = gpio_data_in[2]
+   PORT SW6 = CONN_SW6, IO_IS = gpio_data_in[1]
+   PORT SW7 = CONN_SW7, IO_IS = gpio_data_in[0]
+END       
+
+BEGIN IO_INTERFACE
+ATTRIBUTE IOTYPE = XIL_UART_V1
+ATTRIBUTE INSTANCE = RS232_PORT
+PARAMETER C_BAUDRATE = 9600, IO_IS = C_BAUDRATE
+PARAMETER C_DATA_BITS = 8, IO_IS = C_DATA_BITS
+PARAMETER C_ODD_PARITY = 0, IO_IS = C_ODD_PARITY
+PARAMETER C_USE_PARITY = 0, IO_IS = C_USE_PARITY
+PARAMETER C_CLK_FREQ = 50000000, IO_IS = C_CLK_FREQ
+PORT RXD  = uart1_sin,  IO_IS=serial_in
+PORT TXD  = uart1_sout, IO_IS=serial_out
+END
+
+
+
+
+BEGIN FPGA
+  
+  ATTRIBUTE INSTANCE = fpga_0
+  ATTRIBUTE EXCLUSIVE = FPGA
+  ATTRIBUTE FAMILY = spartan3e
+  ATTRIBUTE  DEVICE =  XC3S250E
+  ATTRIBUTE PACKAGE =  CP132
+  ATTRIBUTE SPEED_GRADE =  -4
+  ATTRIBUTE JTAG_POSITION = 1
+         
+  ### CLOCK ###
+  PORT CLK_50 = CONN_CLK , UCF_NET_STRING=("LOC=B8", "IOSTANDARD = LVCMOS33")
+  #PORT CLK_Socket = CONN_SOCKET_CLK , UCF_NET_STRING=("LOC= U9", "IOSTANDARD = LVCMOS33")
+          
+  ### RESET ###
+  PORT RESET = CONN_FPGA.RESET, UCF_NET_STRING=("LOC=G12", "IOSTANDARD = LVCMOS33")
+
+   ### RS232 PORT ###
+   PORT RXD = uart1_sin, UCF_NET_STRING=("LOC=C13", "IOSTANDARD = LVCMOS33", "PULLUP")
+   PORT TXD  = uart1_sout, UCF_NET_STRING=("LOC=D12", "IOSTANDARD = LVCMOS33", "DRIVE = 2")
+     
+   ### LEDs ###
+   PORT LED0 = CONN_LED0, UCF_NET_STRING=("LOC=M5", "IOSTANDARD = LVCMOS33")     
+   PORT LED1 = CONN_LED1, UCF_NET_STRING=("LOC=M11", "IOSTANDARD = LVCMOS33")     
+   PORT LED2 = CONN_LED2, UCF_NET_STRING=("LOC=P7", "IOSTANDARD = LVCMOS33")    
+   PORT LED3 = CONN_LED3, UCF_NET_STRING=("LOC=P6", "IOSTANDARD = LVCMOS33")
+   PORT LED4 = CONN_LED4, UCF_NET_STRING=("LOC=N5", "IOSTANDARD = LVCMOS33")
+   PORT LED5 = CONN_LED5, UCF_NET_STRING=("LOC=N4", "IOSTANDARD = LVCMOS33")                                
+   PORT LED6 = CONN_LED6, UCF_NET_STRING=("LOC=P4", "IOSTANDARD = LVCMOS33")                                  
+   PORT LED7 = CONN_LED7, UCF_NET_STRING=("LOC=G1", "IOSTANDARD = LVCMOS33")
+
+   ### 7 SEGMENT LED ###
+   PORT SEG_CA = CONN_CA, UCF_NET_STRING= ("LOC=L14", "IOSTANDARD = LVCMOS33")
+   PORT SEG_CB = CONN_CB, UCF_NET_STRING= ("LOC=H12", "IOSTANDARD = LVCMOS33")
+   PORT SEG_CC = CONN_CC, UCF_NET_STRING= ("LOC=N14", "IOSTANDARD = LVCMOS33")
+   PORT SEG_CD = CONN_CD, UCF_NET_STRING= ("LOC=N11", "IOSTANDARD = LVCMOS33")
+   PORT SEG_CE = CONN_CE, UCF_NET_STRING= ("LOC=P12", "IOSTANDARD = LVCMOS33")
+   PORT SEG_CF = CONN_CF, UCF_NET_STRING= ("LOC=L13", "IOSTANDARD = LVCMOS33")
+   PORT SEG_CG = CONN_CG, UCF_NET_STRING= ("LOC=M12", "IOSTANDARD = LVCMOS33")
+   PORT SEG_DP = CONN_DP, UCF_NET_STRING= ("LOC=N13", "IOSTANDARD = LVCMOS33")
+   PORT AN0 = CONN_AN0, UCF_NET_STRING= ("LOC=F12", "IOSTANDARD = LVCMOS33")
+   PORT AN1 = CONN_AN1, UCF_NET_STRING= ("LOC=J12", "IOSTANDARD = LVCMOS33")
+   PORT AN2 = CONN_AN2, UCF_NET_STRING= ("LOC=M13", "IOSTANDARD = LVCMOS33")
+   PORT AN3 = CONN_AN3, UCF_NET_STRING= ("LOC=K14", "IOSTANDARD = LVCMOS33")
+
+  
+   ### PUSH_BUTTONS ###
+   PORT BTN1 = CONN_BTN1, UCF_NET_STRING=("LOC=C11", "IOSTANDARD = LVCMOS33")
+   PORT BTN2 = CONN_BTN2, UCF_NET_STRING=("LOC=M4", "IOSTANDARD = LVCMOS33")
+   PORT BTN3 = CONN_BTN3, UCF_NET_STRING=("LOC=A7", "IOSTANDARD = LVCMOS33")    
+
+   
+   ### DIP_Switches ###
+   PORT SW0 = CONN_SW0, UCF_NET_STRING=("LOC=P11", "IOSTANDARD = LVCMOS33")      
+   PORT SW1 = CONN_SW1, UCF_NET_STRING=("LOC=L3", "IOSTANDARD = LVCMOS33")
+   PORT SW2 = CONN_SW2, UCF_NET_STRING=("LOC=K3", "IOSTANDARD = LVCMOS33")
+   PORT SW3 = CONN_SW3, UCF_NET_STRING=("LOC=B4", "IOSTANDARD = LVCMOS33")
+   PORT SW4 = CONN_SW4, UCF_NET_STRING=("LOC=G3", "IOSTANDARD = LVCMOS33")
+   PORT SW5 = CONN_SW5, UCF_NET_STRING=("LOC=F3", "IOSTANDARD = LVCMOS33")
+   PORT SW6 = CONN_SW6, UCF_NET_STRING=("LOC=E2", "IOSTANDARD = LVCMOS33")
+   PORT SW7 = CONN_SW7, UCF_NET_STRING=("LOC=N3", "IOSTANDARD = LVCMOS33")
+
+END       
